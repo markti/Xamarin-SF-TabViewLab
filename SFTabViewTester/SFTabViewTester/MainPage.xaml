@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SFTabViewTester"
+    x:Class="SFTabViewTester.MainPage"
+    xmlns:vm="clr-namespace:SFTabViewTester.ViewModels"
+    
+    xmlns:tabView="clr-namespace:Syncfusion.XForms.TabView;assembly=Syncfusion.SfTabView.XForms"
+    xmlns:b="clr-namespace:Xamarin.Forms.BehaviorsPack;assembly=Xamarin.Forms.BehaviorsPack"
+    >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Color x:Key="AccentColor">#F08300</Color>
+            <Color x:Key="BackgroundColor">#F5F5F6</Color>
+
+            <ControlTemplate x:Key="AnimalWrapperControlTemplate">
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ContentPresenter Grid.Column="0"/>
+
+                </Grid>
+            </ControlTemplate>
+
+            <DataTemplate x:Key="CatTemplate">
+                <ViewCell>
+                    <Grid>
+                        <Label FontSize="12" Text="I'm a cat person" />
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="DogTemplate">
+                <ViewCell>
+                    <ContentView ControlTemplate="{StaticResource AnimalWrapperControlTemplate}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Label FontSize="30" Text="I'm a dog person" />
+                            <Label Grid.Row="1" Text="woof woof" />
+                        </Grid>
+                    </ContentView>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="SharkTemplate">
+                <ViewCell>
+                    <ContentView ControlTemplate="{StaticResource AnimalWrapperControlTemplate}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Label FontSize="30" Text="MUNCH MUNCH" />
+                            <Label Grid.Row="1" Text="we're gonna need a bigger boat" />
+                        </Grid>
+
+                    </ContentView>
+                </ViewCell>
+            </DataTemplate>
+
+            <DataTemplate x:Key="WhaleTemplate">
+
+                <ViewCell>
+                    <Grid>
+                        <Label FontSize="16" Text="NOM NOM" />
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+
+            <vm:AnimalTemplateSelector 
+                DogTemplate="{StaticResource DogTemplate}"
+                CatTemplate="{StaticResource CatTemplate}"
+                WhaleTemplate="{StaticResource WhaleTemplate}"
+                SharkTemplate="{StaticResource SharkTemplate}"
+                
+                x:Key="templateSelector" 
+                />
+
+            <Style x:Key="AnimalList" TargetType="ListView">
+                <!--<Setter Property="ListView.RowHeight" Value="75" />-->
+                <Setter Property="HasUnevenRows" Value="True" />
+
+            </Style>
+
+            <Style TargetType="tabView:SfTabView">
+                <Setter Property="TabHeaderBackgroundColor" Value="{StaticResource AccentColor}" />
+            </Style>
+
+            <Style TargetType="tabView:SfTabItem">
+                <Setter Property="TitleFontColor" Value="{StaticResource BackgroundColor}" />
+                <Setter Property="SelectionColor" Value="{StaticResource BackgroundColor}" />
+            </Style>
+            
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <tabView:SfTabView>
+        <tabView:SfTabItem Title="Land">
+            <tabView:SfTabItem.Content>
+                <Grid>
+
+                    <ListView
+                            ItemsSource="{Binding LandItems}"
+                            ItemTemplate="{StaticResource templateSelector}"
+                            Style="{StaticResource AnimalList}"
+                            >
+                        <ListView.Behaviors>
+                            <b:SelectedItemBehavior Command="{Binding OverviewSelectionCommand}" />
+                        </ListView.Behaviors>
+                    </ListView>
+                    
+                </Grid>
+            </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+        <tabView:SfTabItem Title="Ocean">
+            <tabView:SfTabItem.Content>
+                <Grid>
+
+                    <ListView
+                            ItemsSource="{Binding OceanItems}"
+                            ItemTemplate="{StaticResource templateSelector}"
+                            Style="{StaticResource AnimalList}"
+                            >
+                        <ListView.Behaviors>
+                            <b:SelectedItemBehavior Command="{Binding OverviewSelectionCommand}" />
+                        </ListView.Behaviors>
+                    </ListView>
+
+                </Grid>
+            </tabView:SfTabItem.Content>
+        </tabView:SfTabItem>
+    </tabView:SfTabView>
+    
+</ContentPage>
